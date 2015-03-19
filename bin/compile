@@ -49,11 +49,9 @@ download(){
 		echo "-----> $EDITION: Database already exists in cache."
 	fi
 
-	OUTPUT="$BUILD_DIR/$SAVE"
+	echo "-----> $EDITION: Copying $DB to $BUILD_DIR"
 
-	echo "-----> $EDITION: Copying $DB to $OUTPUT"
-
-	cp $DB $OUTPUT
+	cp $DB $BUILD_DIR
 
 	if [ -f $FILE ]; then
 		rm $FILE
