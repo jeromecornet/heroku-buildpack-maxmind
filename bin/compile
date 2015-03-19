@@ -13,7 +13,7 @@ mkdir -p $CACHE_DIR
 download(){
 	EDITION=$1
 
-	FILE="$CACHE_DIR/$EDITION.gz"
+	FILE="$CACHE_DIR/$EDITION.mmdb.gz"
 	DB="$CACHE_DIR/$EDITION.mmdb"
 	LAST="$CACHE_DIR/$EDITION.last"
 
@@ -42,7 +42,7 @@ download(){
 
 		echo "-----> $EDITION: Extracting $FILE"
 
-		gunzip $FILE "$EDITION.mmdb"
+		gunzip $FILE
 
 		touch $LAST
 	else
