@@ -13,16 +13,16 @@ mkdir -p $CACHE_DIR
 download(){
 	EDITION=$1
 
-	TAR="$CACHE_DIR/$EDITION.tar.gz"
+	FILE="$CACHE_DIR/$EDITION.gz"
 	DB="$CACHE_DIR/$EDITION.mmdb"
 	LAST="$CACHE_DIR/$EDITION.last"
 
 	if [ -f $DB ]; then
 		if [ -f $LAST ]; then
-			touch -d '-1 week' limit
+			touch -d '-1 month' limit
 
 			if [ limit -nt $LAST ]; then
-				echo "-----> $EDITION: Database is older than a week, clearing cache."
+				echo "-----> $EDITION: Database is older than a month, clearing cache."
 
 				rm $DB
 			fi
@@ -34,15 +34,15 @@ download(){
 	fi
 
 	if [ ! -f $DB ]; then
-		if [ ! -f $TAR ]; then
+		if [ ! -f $FILE ]; then
 			echo "-----> $EDITION: Database does not exist in cache, downloading."
 
-			curl -o $TAR -L "http://geolite.maxmind.com/download/geoip/database/${EDITION}.mmdb.gz"
+			curl -o $FILE -L "http://geolite.maxmind.com/download/geoip/database/${EDITION}.mmdb.gz"
 		fi
 
-		echo "-----> $EDITION: Extracting $TAR"
+		echo "-----> $EDITION: Extracting $FILE"
 
-		tar -zxvf $TAR -C $CACHE_DIR --no-anchored --strip-components=1 "$EDITION.mmdb"
+		gunzip $FILE "$EDITION.mmdb"
 
 		touch $LAST
 	else
@@ -55,8 +55,8 @@ download(){
 
 	cp $DB $OUTPUT
 
-	if [ -f $TAR ]; then
-		rm $TAR
+	if [ -f $FILE ]; then
+		rm $FILE
 	fi
 }
 
