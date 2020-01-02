@@ -8,6 +8,7 @@ The database file(s) is saved to a Heroku cache directory that is persisted acro
 
 ## Required Environment Variables
 * MAXMIND_EDITIONS = Comma delimited list of databases to download ie: "GeoLite2-City,GeoLite2-Country"
+* MAXMIND_KEY = License key necessary to download MaxMind GeoLite2 databases.
 
 ## How to Use
 Follow the instructions at https://github.com/ddollar/heroku-buildpack-multi for using multiple build packs. Simply add this repository to this list and wallah!

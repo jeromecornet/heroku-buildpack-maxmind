@@ -7,6 +7,7 @@ CACHE_DIR=$2
 ENV_DIR=$3
 
 MAXMIND_EDITIONS=`cat $ENV_DIR/MAXMIND_EDITIONS`
+MAXMIND_KEY=`cat $ENV_DIR/MAXMIND_KEY`
 
 mkdir -p $CACHE_DIR
 
@@ -37,7 +38,7 @@ download(){
 		if [ ! -f $FILE ]; then
 			echo "-----> $EDITION: Database does not exist in cache, downloading."
 
-			curl -o $FILE -L "http://geolite.maxmind.com/download/geoip/database/${EDITION}.mmdb.gz"
+			curl -o $FILE -L "https://download.maxmind.com/app/geoip_download?edition_id=${EDITION}&license_key=${MAXMIND_KEY}&suffix=tar.gz"
 		fi
 
 		echo "-----> $EDITION: Extracting $FILE"
