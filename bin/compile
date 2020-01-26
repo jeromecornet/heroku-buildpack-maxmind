@@ -20,10 +20,10 @@ download(){
 
 	if [ -f $DB ]; then
 		if [ -f $LAST ]; then
-			touch -d '-1 month' limit
+			touch -d '-1 week' limit
 
 			if [ limit -nt $LAST ]; then
-				echo "-----> $EDITION: Database is older than a month, clearing cache."
+				echo "-----> $EDITION: Database is older than a week, clearing cache."
 
 				rm $DB
 			fi
