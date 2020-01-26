@@ -14,23 +14,27 @@ mkdir -p $CACHE_DIR
 download(){
 	EDITION=$1
 
-	FILE="$CACHE_DIR/$EDITION.mmdb.gz"
+	FILE="$CACHE_DIR/$EDITION.mmdb.tgz"
 	DB="$CACHE_DIR/$EDITION.mmdb"
 	LAST="$CACHE_DIR/$EDITION.last"
 
 	if [ -f $DB ]; then
 		if [ -f $LAST ]; then
-			touch -d '-1 week' limit
+			touch -d '-1 day' limit
 
 			if [ limit -nt $LAST ]; then
-				echo "-----> $EDITION: Database is older than a week, clearing cache."
+				echo "-----> $EDITION: Database is older than a day, clearing cache."
 
-				rm $DB
+				rm -Rf $DB
 			fi
 		else
 			echo "-----> $EDITION: Unable to determine last download time, clearing cache."
 
-			rm $DB
+			rm -Rf $DB
+		fi
+		if [ -f $ENV_DIR/MAXMIND_FORCE ]; then
+		  echo "-----> $EDITION: force clearing cache."
+		  rm -Rf $DB
 		fi
 	fi
 
@@ -43,7 +47,8 @@ download(){
 
 		echo "-----> $EDITION: Extracting $FILE"
 
-		gunzip $FILE
+		tar xvzf $FILE  -C $CACHE_DIR --strip-components=1 --wildcards "*/${EDITION}.mmdb"
+    rm $FILE
 
 		touch $LAST
 	else
@@ -53,10 +58,6 @@ download(){
 	echo "-----> $EDITION: Copying $DB to $BUILD_DIR"
 
 	cp $DB $BUILD_DIR
-
-	if [ -f $FILE ]; then
-		rm $FILE
-	fi
 }
 
 IFS=', ' read -a editions <<< "$MAXMIND_EDITIONS"
